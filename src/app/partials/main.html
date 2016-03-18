@@ -1,0 +1,42 @@
+<div id="addQuest" class="col-md-offset-3">
+	<form name="questForm" class="form-inline" ng-submit="main.addItem(main.newItem)" novalidate autocomplete="off">
+		<div class="form-group">
+
+			<div class="input-group">
+				<label class="control-label">
+					<input id="itemName"
+					       class="form-control"
+					       type="text"
+					       placeholder="Add new item"
+					       ng-model="main.newItem.name"
+						  />
+				</label>
+				<button type="submit" class="btn btn-default">Add</button>
+			</div>
+		</div>
+		<div class="input-group">
+			<label>Quest
+				<input type="radio" ng-model="main.newItem.type" value="quest" name="type" ng-checked="true">
+			</label>
+			<label>Reward
+				<input type="radio" ng-model="main.newItem.type" value="reward" name="type">
+			</label>
+		</div>
+	</form>
+</div>
+
+<div id="quests" class="row col-md-8 col-md-offset-2">
+	<ul class="list-group">
+		<li id="listItem" class="list-group-item"
+		      ng-repeat="item in main.items | filter:search"
+			  ng-dblclick="main.editItem(item)">
+			<span class="badge pull-left">{{item.type}}</span>
+			{{item.name}}
+			<span class="label label-primary">{{item.date}}</span>
+			<a class="pull-right"
+			   ng-click="main.deleteItem($index)"><span class="glyphicon glyphicon-remove-sign"></span></a>
+			<a class="pull-right" ng-click="main.editItem(item)"><span class="glyphicon glyphicon-edit"></span></a>
+		</li>
+	</ul>
+
+</div>

@@ -1,0 +1,23 @@
+body {
+    background-color: #eee;
+}
+
+footer {
+    text-align: center;
+}
+
+form {
+    font-weight: normal;
+}
+
+#itemName {
+    width: 300px;
+}
+
+div#quests ul {
+    margin: 10px;
+}
+
+#listItem .badge {
+    margin-right: 5px;
+}

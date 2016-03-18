@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Mocha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <script src="../node_modules/mocha/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script>
+	    mocha.setup('bdd');
+	    mocha.reporter('html');
+    </script>
+
+    <!-- build:js scripts/vendor.js -->
+    <script src="../app/bower_components/jquery/dist/jquery.js"></script>
+    <script src="../app/bower_components/lodash/dist/lodash.compat.js"></script>
+    <script src="../app/bower_components/backbone/backbone.js"></script>
+    <script src="../app/bower_components/marionette/lib/backbone.marionette.js"></script>
+    <script src="../app/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/app.js -->
+    <script src="../app/scripts/app.js"></script>
+    <script src="../app/scripts/models/quest.js"></script>
+    <script src="../app/scripts/collections/quests.js"></script>
+    <script src="../app/scripts/views/main.js"></script>
+    <script src="../app/scripts/views/editQuest.js"></script>
+    <script src="../app/scripts/views/viewQuest.js"></script>
+    <script src="../app/scripts/routes/questsRouter.js"></script>
+    <script src="../app/scripts/utils.js"></script>
+    <!-- endbuild -->
+
+    <script src="tests/namespace.js"></script>
+    <script src="tests/quest.model.js"></script>
+    <script src="tests/quests.collection.js"></script>
+    <script>
+      mocha.run();
+    </script>
+  </body>
+</html>
