@@ -21,3 +21,17 @@ div#quests ul {
 #listItem .badge {
     margin-right: 5px;
 }
+
+#details label {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#description {
+    max-width: 280px;;
+}
+
+.page-header {
+    margin-top: 20px;
+}
+

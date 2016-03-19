@@ -21,7 +21,6 @@ var Comments = new mongoose.Schema({
 });
 //Schemas
 var Item = new mongoose.Schema({
-	id: Number,
 	name: String,
 	type: String,
 	description: String,

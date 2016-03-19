@@ -1,7 +1,42 @@
-<div id="detils" class="container-fluid">
-	<h4>Item Details</h4>
+<div id="details" class="container-fluid">
+	<!--
+	Name editable field,
+	Type non-editable field,
+	Priority editable dropdown,
+	TODO: Reference non-editable link
+	Created Date non-editable string,
+	TODO: Subtasks,
+	TODO: Tags,
+	Description editable textarea,
+	Comments list and textarea,
+	-->
+	<h4 class="page-header">Item Details</h4>
 
-	<p>Name {{details.editItem.name}}</p>
+	<label for="name">Name</label>
+	<div class="input-group">
+		<input type="text" ng-model="details.editItem.name" class="form-control" id="name">
+	</div>
 
-	<p>Test {{details.editItem.type}}</p>
+	<label class="input-group">Type: <span class="badge">{{details.editItem.type}}</span></label>
+
+	<label for="priority">Priority</label>
+	<div class="input-group">
+		<select class="form-control" id="priority" ng-model="details.editItem.priority"
+		        ng-options="item for item in details.priorityOptions">
+			<option value="">Nothing Selected</option>
+		</select>
+	</div>
+
+	<label class="input-group">Created Date: <span class="label label-primary">{{details.editItem.date | date}}</span></label>
+
+	<label for="description">Description</label>
+	<div class="input-group col-md-12">
+		<textarea ng-model="details.editItem.description" class="form-control" id="description" rows="5"
+		          placeholder="Description for an item">
+			</textarea>
+	</div>
+
+	<div class="input-group">
+		<a href="#" class="btn btn-primary" ng-click="details.saveItem()">Save</a>
+	</div>
 </div>
