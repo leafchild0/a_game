@@ -12,31 +12,58 @@
 	-->
 	<h4 class="page-header">Item Details</h4>
 
+
+	<div class="form-group">
 	<label for="name">Name</label>
-	<div class="input-group">
 		<input type="text" ng-model="details.editItem.name" class="form-control" id="name">
 	</div>
 
-	<label class="input-group">Type: <span class="badge">{{details.editItem.type}}</span></label>
+	<label class="input-group">Type: <span class="badge">{{details.editItem.type | uppercase}}</span></label>
 
-	<label for="priority">Priority</label>
-	<div class="input-group">
+	<div class="form-group">
+		<label for="priority">Priority</label>
 		<select class="form-control" id="priority" ng-model="details.editItem.priority"
 		        ng-options="item for item in details.priorityOptions">
-			<option value="">Nothing Selected</option>
+			<option value="">Nothing</option>
 		</select>
 	</div>
 
-	<label class="input-group">Created Date: <span class="label label-primary">{{details.editItem.date | date}}</span></label>
+	<div class="form-group" uib-dropdown>
+		<label for="reference">Reference</label>
+		<button id="reference" type="button" class="btn btn-default" uib-dropdown-toggle>
+			{{details.editItem.reference || 'Nothing'}} <span class="caret"></span>
+		</button>
+		<ul uib-dropdown-menu role="menu" aria-labelledby="reference">
+			<li role="menuitem" ng-repeat="reward in details.rewards">
+				<a href="#" ng-click="details.editItem.reference = reward.name">{{reward.name}}</a>
+			</li>
+		</ul>
+	</div>
+
+	<label class="input-group">Created Date: <span
+			class="label label-primary">{{details.editItem.date | date}}</span></label>
 
 	<label for="description">Description</label>
+
 	<div class="input-group col-md-12">
-		<textarea ng-model="details.editItem.description" class="form-control" id="description" rows="5"
+		<textarea ng-model="details.editItem.description" class="form-control" id="description" rows="4"
 		          placeholder="Description for an item">
 			</textarea>
 	</div>
 
-	<div class="input-group">
-		<a href="#" class="btn btn-primary" ng-click="details.saveItem()">Save</a>
+	<label class="input-group">Comments</label>
+
+	<div id="comments-list" ng-repeat="comment in details.editItem.comments">
+		<blockquote>
+			<p>{{comment.body}}</p>
+			<footer class="label label-primary pull-left">{{comment.date | date}}</footer>
+		</blockquote>
 	</div>
+	<br>
+
+	<form id="commentForm" class="form-inline" name="commentForm" ng-submit="details.addComment()" novalidate>
+		<input type="text" ng-model="details.newComment" class="form-control"
+		       id="comment" title="Comment" placeholder="Add a new comment">
+	</form>
+
 </div>

@@ -35,3 +35,14 @@ div#quests ul {
     margin-top: 20px;
 }
 
+blockquote {
+    padding: 5px 10px 5px 10px;
+    font-size: 13px;
+    border-left: 5px solid #eee;
+}
+
+#commentForm {
+    position: fixed;
+    bottom: 10px;
+    max-width: 280px;
+}

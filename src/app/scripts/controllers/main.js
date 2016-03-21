@@ -79,10 +79,30 @@
 				resolve:      {
 					//Is it going last? Are they all running last? Params!
 					//Anyway it's going to another Controller here
-					editItem: item
+					editItem: item,
+					rewards: function() {
+						return vm.items.filter(function(item){ return item.type == 'reward'})
+					}
 				}
 			});
+
+			details.result.finally(function () {
+				if ( item.changed ) {
+					itemService.singleItem().update({ id: item._id }, item).$promise.then(
+						  function () {
+							  //Do nothing in this case
+							  //Just be happy for now
+							  //$uibModalInstance.close();
+						  },
+						  function ( response ) {
+							  vm.message = "Error: " + response.status + " " + response.statusText;
+						  }
+					);
+				}
+			});
+
 		};
+
 	}
 })();
 

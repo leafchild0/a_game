@@ -51,18 +51,18 @@ module.exports =  function(app, ItemModel ) {
 	app.put( '/api/item/:id', function( request, response ){
 		console.log( 'Updating item ' + request.body.name );
 		return ItemModel.findById( request.params.id, function( err, item ){
-			item.name = request.body.name;
-			item.description = request.body.description;
-			item.type = request.body.type;
-			item.priority = request.body.priority;
+			if(request.body.name) item.name = request.body.name;
+			if(request.body.description) item.description = request.body.description;
+			if(request.body.type) item.type = request.body.type;
+			if(request.body.priority) item.priority = request.body.priority;
 			//Correct add of comments
-			if( request.body.isComment ) item.comments.push( { body: request.body.comments } );
-			item.tags = request.body.tags;
-			item.date = request.body.date;
-			item.reward = request.body.reward;
+			if(request.body.comments) item.comments = request.body.comments;
+			if(request.body.tags) item.tags = request.body.tags;
+			if(request.body.date) item.date = request.body.date;
+			if(request.body.reference) item.reference = request.body.reference;
 			return item.save( function( err ){
 				if( err ) console.log( err );
-				else console.log( 'item updated' );
+				else console.log( item.name + ' updated' );
 
 				return response.send( item );
 			} );

@@ -11,28 +11,25 @@
 		  .module('aGame')
 		  .controller('DetailsController', DetailsController);
 	
-	DetailsController.$inject = ['editItem', '$uibModalInstance', 'itemService'];
+	DetailsController.$inject = ['editItem', 'rewards', '$scope'];
 	/** @ngInject */
-	function DetailsController(editItem, $uibModalInstance, itemService) {
+	function DetailsController(editItem, rewards, $scope) {
 		var vm = this;
 		vm.editItem = editItem;
-		vm.priorityOptions = [1, 2, 3];
+		vm.priorityOptions = [ 1, 2, 3 ];
 		vm.message = '';
+		vm.rewards = rewards;
 
-		//TODO: Save item after edit
-		vm.saveItem = function () {
+		$scope.$watchCollection('editItem', function() {
+			//Just marking that item was changed and because of that will notify server
+			editItem.changed = true;
+		});
 
-			itemService.singleItem().update({id: editItem._id}, editItem).$promise.then(
-				  function () {
-					  //Do nothing in this case
-					  //Just be happy for now
-					  $uibModalInstance.close();
-				  },
-				  function ( response ) {
-					  vm.message = "Error: " + response.status + " " + response.statusText;
-				  });
-		};
-
+		vm.addComment = function() {
+			if(vm.editItem.newComment != '') {
+				vm.editItem.comments.push({body: vm.newComment, date: new Date()});
+				vm.editItem.newComment = '';
+			}
+		} ;
 	}
-	
 })();
