@@ -7,7 +7,7 @@
 'use strict';
 
 angular
-	  .module('aGame', [ 'ngResource', 'ui.router', 'ui.bootstrap', 'ngAside' ]);
+	  .module('aGame', [ 'ngResource', 'ui.router', 'ui.bootstrap', 'ngAside', 'ngTagsInput' ]);
 
 angular
 	  .module('aGame')

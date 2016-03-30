@@ -3,8 +3,9 @@
 	Name editable field,
 	Type non-editable field,
 	Priority editable dropdown,
-	TODO: Reference non-editable link
+	Reference non-editable link
 	Created Date non-editable string,
+	Due Date non-editable string,
 	TODO: Subtasks,
 	TODO: Tags,
 	Description editable textarea,
@@ -12,13 +13,34 @@
 	-->
 	<h4 class="page-header">Item Details</h4>
 
-
 	<div class="form-group">
-	<label for="name">Name</label>
+		<label for="name">Name</label>
 		<input type="text" ng-model="details.editItem.name" class="form-control" id="name">
 	</div>
 
 	<label class="input-group">Type: <span class="badge">{{details.editItem.type | uppercase}}</span></label>
+
+	<label class="input-group">Created Date: <span
+			class="label label-primary">{{details.editItem.createdDate | date}}</span></label>
+
+	<label for="dueDate" class="input-group">Due Date:</label>
+		<div class="input-group">
+			<input id="dueDate" type="text" class="form-control" uib-datepicker-popup ng-model="details.editItem.dueDate"
+			       is-open="details.dueDatePopup.opened" datepicker-options="details.dateOptions" ng-required="false"
+			       close-text="Close"/>
+          <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="details.showDueDate()"><i
+		            class="glyphicon glyphicon-calendar"></i></button>
+          </span>
+		</div>
+
+	<div class="form-group">
+		<label for="tags">Tags</label>
+		<tags-input id="tags" ng-model="details.editItem.tags" add-on-paste="true">
+			<auto-complete source="details.getTags($query)"></auto-complete>
+		</tags-input>
+		<p>Model: {{tags}}</p>
+	</div>
 
 	<div class="form-group">
 		<label for="priority">Priority</label>
@@ -28,23 +50,25 @@
 		</select>
 	</div>
 
+	<!--Reference-->
 	<div class="form-group" uib-dropdown>
 		<label for="reference">Reference</label>
-		<button id="reference" type="button" class="btn btn-default" uib-dropdown-toggle>
-			{{details.editItem.reference || 'Nothing'}} <span class="caret"></span>
+		<button id="reference" type="button" class="btn btn-default" uib-dropdown-toggle
+		        uib-popover-template="details.popoverTemplate" popover-trigger="mouseenter" popover-title="Connected with:"
+		        ng-disabled="details.editItem.type === 'reward'" ng-mouseenter="details.populateReferenceInfo()">
+			{{details.currentReference.name || 'Nothing'}} <span class="caret"></span>
 		</button>
 		<ul uib-dropdown-menu role="menu" aria-labelledby="reference">
-			<li role="menuitem" ng-repeat="reward in details.rewards">
-				<a href="#" ng-click="details.editItem.reference = reward.name">{{reward.name}}</a>
+			<li ng-if="details.editItem.type === 'quest'" role="menuitem" ng-repeat="item in details.rewards">
+				<a href="#" ng-click="details.updateReference(item)">{{item.name}}</a>
+			</li>
+			<li ng-if="details.editItem.type === 'reward'" role="menuitem" ng-repeat="item in details.quests">
+				<a href="#" >{{item.name}}</a>
 			</li>
 		</ul>
 	</div>
 
-	<label class="input-group">Created Date: <span
-			class="label label-primary">{{details.editItem.date | date}}</span></label>
-
 	<label for="description">Description</label>
-
 	<div class="input-group col-md-12">
 		<textarea ng-model="details.editItem.description" class="form-control" id="description" rows="4"
 		          placeholder="Description for an item">
@@ -52,7 +76,6 @@
 	</div>
 
 	<label class="input-group">Comments</label>
-
 	<div id="comments-list" ng-repeat="comment in details.editItem.comments">
 		<blockquote>
 			<p>{{comment.body}}</p>
@@ -61,9 +84,18 @@
 	</div>
 	<br>
 
-	<form id="commentForm" class="form-inline" name="commentForm" ng-submit="details.addComment()" novalidate>
+	<form id="commentForm" class="form-inline" name="commentForm" ng-submit="details.addComment()" novalidate
+	      ng-init="details.init()">
 		<input type="text" ng-model="details.newComment" class="form-control"
 		       id="comment" title="Comment" placeholder="Add a new comment">
 	</form>
-
 </div>
+
+<script type="text/ng-template" id="referencePopover.html">
+	<div class="page-title">{{details.currentReference.name}}</div>
+	<div class="form-group">
+		<label>Description:</label> <p>{{details.currentReference.description}}</p>
+		<label>Due Date:</label> <p>{{details.currentReference.dueDate | date}}</p>
+		<label>Priority</label> <p>{{details.currentReference.priority}}</p>
+	</div>
+</script>

@@ -75,14 +75,13 @@
 				controller:   'DetailsController',
 				controllerAs: 'details',
 				placement:    'right',
+				keyboard: true,
 				size:         'sm',
 				resolve:      {
 					//Is it going last? Are they all running last? Params!
 					//Anyway it's going to another Controller here
 					editItem: item,
-					rewards: function() {
-						return vm.items.filter(function(item){ return item.type == 'reward'})
-					}
+					items: function() {return vm.items;}
 				}
 			});
 

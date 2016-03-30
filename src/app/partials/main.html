@@ -28,11 +28,11 @@
 <div id="quests" class="row col-md-8 col-md-offset-2">
 	<ul class="list-group">
 		<li id="listItem" class="list-group-item"
-		      ng-repeat="item in main.items | filter:search"
+		      ng-repeat="item in main.items | filter:search(name, tags)"
 			  ng-dblclick="main.editItem(item)">
 			<span class="badge pull-left">{{item.type}}</span>
 			{{item.name}}
-			<span class="label label-primary">{{item.date | date}}</span>
+			<span class="label label-primary">{{item.dueDate | date}}</span>
 			<a class="pull-right"
 			   ng-click="main.deleteItem(item, $index)"><span class="glyphicon glyphicon-remove-sign"></span></a>
 			<a class="pull-right" ng-click="main.editItem(item)"><span class="glyphicon glyphicon-edit"></span></a>

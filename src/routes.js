@@ -58,7 +58,8 @@ module.exports =  function(app, ItemModel ) {
 			//Correct add of comments
 			if(request.body.comments) item.comments = request.body.comments;
 			if(request.body.tags) item.tags = request.body.tags;
-			if(request.body.date) item.date = request.body.date;
+			if(request.body.createdDate) item.createdDate = request.body.createdDate;
+			if(request.body.dueDate) item.dueDate = request.body.dueDate;
 			if(request.body.reference) item.reference = request.body.reference;
 			return item.save( function( err ){
 				if( err ) console.log( err );

@@ -25,10 +25,11 @@ var Item = new mongoose.Schema({
 	type: String,
 	description: String,
 	priority: Number,
-	subtasks: [],
-	tags: [{tag: String}],
+	subtasks: [{name: String}],
+	tags: [{text: String}],
 	comments : [ Comments ],
-	date: { type: Date, default: Date.now },
+	createdDate: { type: Date, default: Date.now },
+	dueDate: { type: Date },
 	reference: String
 
 });
