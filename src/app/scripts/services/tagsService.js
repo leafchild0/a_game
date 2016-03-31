@@ -15,7 +15,6 @@
 	/** @ngInject */
 	function TagsService(  ) {
 		var vm = this;
-
 		vm.tags = [];
 
 		vm.getTagsFromItems = function(items) {

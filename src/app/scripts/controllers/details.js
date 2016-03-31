@@ -39,16 +39,17 @@
 			if ( angular.isString(vm.editItem.dueDate) ) {
 				vm.editItem.dueDate = Date.parse(vm.editItem.dueDate);
 			}
+
+			//This method will be called several times, but it will save the object only on closing the modal
+			$scope.$watchCollection(vm.editItem, function () {
+				$scope.$on('modal.closing', function () {
+					//Just marking that item was changed and because of that will notify server
+					vm.editItem.changed = true;
+				});
+			});
+			//Populate reference if item already have it
 			vm.populateReferenceInfo();
 		})();
-
-		//This method will be called several times, but it will save the object only on closing the modal
-		$scope.$watchCollection(vm.editItem, function () {
-				  $scope.$on('modal.closing', function () {
-					  //Just marking that item was changed and because of that will notify server
-					  vm.editItem.changed = true;
-				  });
-			  });
 
 		vm.addComment = function () {
 			if ( vm.newComment != '' ) {
@@ -83,7 +84,6 @@
 
 		vm.showDueDate = function () {
 			vm.dueDatePopup.opened = true;
-
 		};
 
 		vm.getTags = function ( query ) {

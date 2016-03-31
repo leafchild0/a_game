@@ -5,7 +5,7 @@
  */
 mongoose = require('mongoose'); //MongoDB integration
 
-//Connect to database "Game"
+//Connect to database "a_game"
 mongoose.connect( 'mongodb://localhost/a_game' );
 
 //In case of any additional operations with DB

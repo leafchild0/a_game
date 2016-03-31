@@ -75,17 +75,18 @@
 				controller:   'DetailsController',
 				controllerAs: 'details',
 				placement:    'right',
-				keyboard: true,
+				keyboard:     true,
 				size:         'sm',
 				resolve:      {
 					//Is it going last? Are they all running last? Params!
 					//Anyway it's going to another Controller here
 					editItem: item,
-					items: function() {return vm.items;}
+					items:    function () {return vm.items;}
 				}
 			});
 
 			details.result.finally(function () {
+				//Saving an updates on item
 				if ( item.changed ) {
 					itemService.singleItem().update({ id: item._id }, item).$promise.then(
 						  function () {
