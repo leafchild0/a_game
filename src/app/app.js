@@ -19,16 +19,28 @@ angular
 function routerConfig( $stateProvider, $urlRouterProvider, $locationProvider ) {
 	$stateProvider
 		  .state('main', {
-			  url:          '/',
+			  url:          '/main',
 			  templateUrl:  'app/partials/main.html',
 			  controller:   'MainController',
 			  controllerAs: 'main'
+		  })
+		  .state('auth', {
+			  url:          '/',
+			  templateUrl:  'app/partials/auth.html',
+			  controller:   'LoginController',
+			  controllerAs: 'auth'
 		  })
 		  .state('login', {
 			  url:          '/login',
 			  templateUrl:  'app/partials/login.html',
 			  controller:   'LoginController',
 			  controllerAs: 'login'
+		  })
+		  .state('signup', {
+			  url:          '/signup',
+			  templateUrl:  'app/partials/signup.html',
+			  controller:   'LoginController',
+			  controllerAs: 'signup'
 		  });
 
 	$urlRouterProvider.otherwise('/');
@@ -45,4 +57,3 @@ function navbar() {
 		bindToController: true
 	};
 }
-
