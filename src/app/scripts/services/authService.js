@@ -15,6 +15,7 @@
 	/** @ngInject */
 	function AuthService( $resource, baseURL ) {
 		var vm = this;
+        vm.isLoggedIn = false;
 
         vm.login = function () {
 			//Get user info

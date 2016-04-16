@@ -32,25 +32,6 @@
 			startingDay: 1
 		};
 
-		//Init function
-		(function () {
-			//Everything to be run on init
-			//Parse due date in order to show modal for it
-			if ( angular.isString(vm.editItem.dueDate) ) {
-				vm.editItem.dueDate = Date.parse(vm.editItem.dueDate);
-			}
-
-			//This method will be called several times, but it will save the object only on closing the modal
-			$scope.$watchCollection(vm.editItem, function () {
-				$scope.$on('modal.closing', function () {
-					//Just marking that item was changed and because of that will notify server
-					vm.editItem.changed = true;
-				});
-			});
-			//Populate reference if item already have it
-			vm.populateReferenceInfo();
-		})();
-
 		vm.addComment = function () {
 			if ( vm.newComment != '' ) {
 				vm.editItem.comments.push({ body: vm.newComment, date: new Date() });
@@ -89,5 +70,24 @@
 		vm.getTags = function ( query ) {
 			return tagsService.getTagsFromItems(items);
 		};
+        
+        //Init function
+        (function () {
+            //Everything to be run on init
+            //Parse due date in order to show modal for it
+            if ( angular.isString(vm.editItem.dueDate) ) {
+                vm.editItem.dueDate = Date.parse(vm.editItem.dueDate);
+            }
+            
+            //This method will be called several times, but it will save the object only on closing the modal
+            $scope.$watchCollection(vm.editItem, function () {
+                $scope.$on('modal.closing', function () {
+                    //Just marking that item was changed and because of that will notify server
+                    vm.editItem.changed = true;
+                });
+            });
+            //TODO: Populate reference if item already have it
+            
+        })();
 	}
 })();

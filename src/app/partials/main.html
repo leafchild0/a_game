@@ -29,7 +29,7 @@
 <div id="quests" class="row col-md-8 col-md-offset-2">
 	<ul class="list-group">
 		<li id="listItem" class="list-group-item"
-		      ng-repeat="item in main.items | filter:search(name, tags)"
+		      ng-repeat="item in main.items | filter:search"
 			  ng-dblclick="main.editItem(item)">
 			<span class="badge pull-left">{{item.type}}</span>
 			{{item.name}}

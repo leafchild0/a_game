@@ -20,7 +20,7 @@
 			//Get a specific item
 			//Update item
 			//Delete item
-			return $resource(baseURL + 'api/item/:id', null, {
+			return $resource(baseURL + 'item/:id', null, {
 				'update': { method: 'PUT' }
 			});
 		};
@@ -28,7 +28,7 @@
 			//Get All items
 			//Delete All items
 			//Create items with POST
-			return $resource(baseURL + 'api/items', null, {
+			return $resource(baseURL + 'items', null, {
 				'add': { method:   'POST' },
 				'getAll': { method:   'GET' , isArray:true }
 			});
