@@ -15,7 +15,7 @@
 	/** @ngInject */
 	function AuthService( $resource, baseURL ) {
 		var vm = this;
-        vm.isLoggedIn = false;
+        vm.isLogged = false;
 
         vm.login = function () {
 			//Get user info
@@ -30,6 +30,20 @@
 			//Create user
 			return $resource(baseURL + 'signup', null, {});
 		};
+
+		vm.userStatus = function () {
+			//Get user info
+			//Create user
+			return $resource(baseURL + 'status', null, {});
+		};
+
+		vm.isLoggedIn = function () {
+			return vm.isLogged;
+		}
+
+		vm.setLoggedIn = function (logged) {
+			vm.isLogged = logged;
+		}
 
 	}
 

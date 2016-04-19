@@ -4,11 +4,12 @@
  * Time: 12:31 AM
  */
 
-var LocalStrategy = require('passport-local' ).Strategy;
+
 var ItemModel = require( "./models" ).item;
 var User = require( "./models" ).user;
 
-module.exports = function ( app, passport ){
+var router = require('express').Router();
+var passport = require('passport');
 
     /*Routes
      * GET query
@@ -18,16 +19,8 @@ module.exports = function ( app, passport ){
      * DELETE
      */
 
-    // configure passport
-    passport.use(new LocalStrategy({
-        usernameField : 'email',
-        passwordField : 'password' },
-        User.authenticate()));
-    passport.serializeUser(User.serializeUser());
-    passport.deserializeUser(User.deserializeUser());
-
     //Get a list of all quests
-    app.get( '/items', isLoggedIn, function ( request, response ){
+    router.get( '/items', function ( request, response ){
         return ItemModel.find( function ( err, items ){
             if ( err ) return response.send( err );
 
@@ -36,7 +29,7 @@ module.exports = function ( app, passport ){
     } );
 
     //Insert a new quest
-    app.post( '/items', isLoggedIn, function ( request, response ){
+    router.post( '/items', function ( request, response ){
 
         var item = new ItemModel( {
             name: request.body.name,
@@ -52,7 +45,7 @@ module.exports = function ( app, passport ){
     } );
 
     //Get a single quest by id
-    app.get( '/item/:id', isLoggedIn, function ( request, response ){
+    router.get( '/item/:id', function ( request, response ){
         return ItemModel.findById( request.params.id, function ( err, item ){
             if ( err ) return response.send( err );
 
@@ -61,7 +54,7 @@ module.exports = function ( app, passport ){
     } );
 
     //Update a quest
-    app.put( '/item/:id', isLoggedIn, function ( request, response ){
+    router.put( '/item/:id', function ( request, response ){
         console.log( 'Updating item ' + request.body.name );
         return ItemModel.findById( request.params.id, function ( err, item ){
             if ( request.body.name ) item.name = request.body.name;
@@ -84,7 +77,7 @@ module.exports = function ( app, passport ){
     } );
 
     //Delete a quest
-    app.delete( '/item/:id', isLoggedIn, function ( request, response ){
+    router.delete( '/item/:id', function ( request, response ){
         console.log( 'Deleting item with id: ' + request.params.id );
         return ItemModel.findById( request.params.id, function ( err, item ){
             return item.remove( function ( err ){
@@ -99,7 +92,7 @@ module.exports = function ( app, passport ){
     /*LOGIN RELATED*/
 
     //logging in user int the system
-    app.post( '/login', function ( req, res, next ){
+    router.post( '/login', function ( req, res, next ){
         passport.authenticate('local', function(err, user, info) {
             if (err) {
                 return next(err);
@@ -123,7 +116,7 @@ module.exports = function ( app, passport ){
     });
 
     //Posting data with newly create user account
-    app.post( '/signup', function ( req, res ){
+    router.post( '/signup', function ( req, res ){
         User.register( new User( { username: req.body.email } ),
             req.body.password, function ( err, account ){
                 if ( err ){
@@ -140,12 +133,13 @@ module.exports = function ( app, passport ){
     } );
 
     //Logging out
-    app.post( '/logout', function ( req, res ){
+    router.get( '/logout', function ( req, res ){
         req.logout();
-        res.redirect( '/' );
+        req.session.destroy();
+        res.redirect('/');
     } );
-    
-    app.get('/status', function(req, res) {
+
+    router.get( '/status', function(req, res) {
         if (!req.isAuthenticated()) {
             return res.status(200).json({
                 status: false
@@ -156,17 +150,8 @@ module.exports = function ( app, passport ){
         });
     });
 
-    function isLoggedIn( req, res, next ){
+    router.get('*', function(req, res){
+        res.redirect('/');
+    });
 
-        // if user is authenticated in the session, carry on
-        if ( req.isAuthenticated() )
-            return next();
-
-        // if they aren't redirect them to the home page
-        res.redirect( '/' );
-    }
-    
-    app.get( '*', function ( req, res ){
-        res.redirect( '/' );
-    } );
-};
+module.exports = router;

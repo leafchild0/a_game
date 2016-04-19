@@ -81,7 +81,7 @@
 					//Is it going last? Are they all running last? Params!
 					//Anyway it's going to another Controller here
 					editItem: item,
-					items:    function () {return vm.items;}
+					items:    function () { return vm.items; }
 				}
 			});
 
@@ -102,6 +102,5 @@
 			});
 
 		};
-
 	}
 })();
