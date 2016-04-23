@@ -1,22 +1,24 @@
 <nav class="navbar navbar-static-top navbar-default">
-	<div class="container-fluid">
-		<div class="navbar-header">
-			<a ui-sref="main" class="navbar-brand">
-				<span class="glyphicon glyphicon-th-list"></span> Quests-Rewards
-			</a>
-		</div>
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a ui-sref="main" class="navbar-brand">
+                <span class="glyphicon glyphicon-th-list"></span> Quests-Rewards
+            </a>
+        </div>
 
-		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-6">
 
-			<form class="navbar-form navbar-left" role="search">
-				<div class="form-group">
-					<input type="text" id="searchTask" class="form-control" placeholder="Search" ng-model="search">
-				</div>
-			</form>
+            <form class="navbar-form navbar-left" role="search">
+                <div class="form-group">
+                    <input type="text" id="searchTask" class="form-control" placeholder="Search" ng-model="search">
+                </div>
+            </form>
 
-			<ul class="nav navbar-nav navbar-right">
-				<li><a href="/logout" target="_self"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-			</ul>
-		</div>
-	</div>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#" ng-csv="vm.data" filename="{{ vm.fileName }}.csv" csv-header="vm.exportHeaders">
+                    <span class="glyphicon glyphicon-paperclip"></span> Export Items</a></li>
+                <li><a href="/logout" target="_self"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+            </ul>
+        </div>
+    </div>
 </nav>

@@ -40,7 +40,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-//app.use(methodOverride());
+app.use(methodOverride());
 app.use(session({
     secret: 'testing_passport',
     resave: false,
@@ -66,7 +66,7 @@ app.get('/', function (req, res) {
     res.sendFile(path.join(dist + '/index.html'));
 });
 
-// error hndlers
+// error handlers
 app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;

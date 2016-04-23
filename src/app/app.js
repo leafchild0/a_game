@@ -4,11 +4,15 @@
  * Time: 19:02
  */
 'use strict';
-var app = angular.module('aGame', ['ngResource', 'ui.router', 'ui.bootstrap', 'ngAside', 'ngTagsInput']);
-app.config(routerConfig).directive('navbar', navbar).constant('baseURL', 'http://localhost:3000/');
+var app = angular.module('aGame', [
+    'ngResource', 'ui.router', 'ui.bootstrap', 'ngAside', 'ngTagsInput','ngSanitize', 'ngCsv'
+]);
+app.config(routerConfig).directive(
+    'navbar', navbar).constant('baseURL', 'http://localhost:3000/');
 /** @ngInject */
 function routerConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     // the known route, with missing '/' - let's create alias
+    $urlRouterProvider.otherwise('/');
     $locationProvider.html5Mode(true);
     $stateProvider.state('auth', {
         url: '/',
@@ -53,12 +57,16 @@ app.run(['$state', '$rootScope', '$location', 'authService', function($state, $r
 
 }]);
 /** @ngInject */
+navbar.$inject = [ 'itemService' ];
+
 function navbar() {
     return {
         restrict: 'E',
         templateUrl: 'app/partials/navbar.html',
         controller: 'MainController',
         controllerAs: 'vm',
-        bindToController: true
+        bindToController: true,
+        scope: {
+            data: '='        }
     };
 }
