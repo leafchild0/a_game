@@ -6,15 +6,16 @@
  *  of the tasks
  */
 
-var gutil = require('gulp-util');
+var gutil = require( 'gulp-util' );
 
 /**
  *  The main paths of your project handle these with care
  */
 exports.paths = {
-  src: 'src',
+  src : 'src',
   dist: 'dist',
-  tmp: '.tmp'
+  tmp : '.tmp',
+  tests: 'test'  
 };
 
 /**
@@ -23,18 +24,18 @@ exports.paths = {
  *  to inject css preprocessor deps and js files in karma
  */
 exports.wiredep = {
-  exclude: [/\/bootstrap\.js$/],
+  exclude  : [ /\/bootstrap\.js$/ ],
   directory: 'bower_components'
 };
 
 /**
  *  Common implementation for an error handler of a Gulp plugin
  */
-exports.errorHandler = function(title) {
+exports.errorHandler = function ( title ){
   'use strict';
-
-  return function(err) {
-    gutil.log(gutil.colors.red('[' + title + ']'), err.toString());
-    this.emit('end');
+  
+  return function ( err ){
+    gutil.log( gutil.colors.red( '[' + title + ']' ), err.toString() );
+    this.emit( 'end' );
   };
 };

@@ -1,6 +1,7 @@
 {
   "name": "aGame",
   "version": "0.0.1",
+  "main": "src/index.html",
   "dependencies": {
     "angular-resource": "~1.5.0",
     "angular-ui-router": "~0.2.15",
@@ -28,7 +29,12 @@
       ]
     }
   },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
   "resolutions": {
-    "angular": "~1.4.2"
+    "angular": "~1.5.0"
   }
 }

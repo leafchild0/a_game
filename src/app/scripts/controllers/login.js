@@ -15,12 +15,14 @@
     function LoginController( authService, $location ){
         var vm     = this;
         vm.message = null;
+        vm.result = null;
 
         vm.signup = function ( newUser ){
 
             //Make a call to the backend which will return User info or error message
             authService.signup().save( newUser ).$promise.then(
                 function ( response ){
+                    vm.result = response;
                     //Add item to the collection of items
                     $location.path( '/login' ).replace();
                 },
@@ -33,6 +35,7 @@
             //Make a call to the backend which will return User info or error message
             authService.login().make( user ).$promise.then(
                 function ( response ){
+                    vm.result = response;
                     //Add item to the collection of items
                     authService.setLoggedIn( true );
                     $location.path( '/main' ).replace();

@@ -7,31 +7,26 @@ var _ = require('lodash');
 var wiredep = require('wiredep');
 
 var pathSrcHtml = [
-  path.join(conf.paths.src, '/**/*.html')
+  path.join(conf.paths.src, '/app/**/*.html')
 ];
 
 function listFiles() {
-  var wiredepOptions = _.extend({}, conf.wiredep, {
-    dependencies: true,
-    devDependencies: true
-  });
 
-  var patterns = wiredep(wiredepOptions).js
+  var patterns = wiredep(_.extend({}, conf.wiredep)).js
     .concat([
-      path.join(conf.paths.src, '/app/**/*.module.js'),
-      path.join(conf.paths.src, '/app/**/*.js'),
-      path.join(conf.paths.src, '/**/*.spec.js'),
-      path.join(conf.paths.src, '/**/*.mock.js'),
+      path.join(conf.paths.src, '/app/app.js'),
+      path.join(conf.paths.src, '/app/scripts/*.js'),
+      path.join(conf.paths.tests, '/**/*.js')
     ])
     .concat(pathSrcHtml);
-
-  var files = patterns.map(function(pattern) {
+  
+  var files = patterns.map(function (pattern) {
     return {
       pattern: pattern
     };
   });
   files.push({
-    pattern: path.join(conf.paths.src, '/assets/**/*'),
+    pattern: path.join(conf.paths.src, 'app/images/*.png'),
     included: false,
     served: true,
     watched: false
@@ -55,7 +50,7 @@ module.exports = function(config) {
 
     logLevel: 'WARN',
 
-    frameworks: ['jasmine', 'angular-filesort'],
+    frameworks: ['jasmine', 'angular-filesort', 'wiredep', 'jasmine-matchers'],
 
     angularFilesort: {
       whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
@@ -64,10 +59,12 @@ module.exports = function(config) {
     browsers : ['PhantomJS'],
 
     plugins : [
+      'karma-wiredep',
       'karma-phantomjs-launcher',
       'karma-angular-filesort',
       'karma-coverage',
       'karma-jasmine',
+      'karma-jasmine-matchers',
       'karma-ng-html2js-preprocessor'
     ],
 
@@ -91,20 +88,6 @@ module.exports = function(config) {
   pathSrcHtml.forEach(function(path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
-
-  // This block is needed to execute Chrome on Travis
-  // If you ever plan to use Chrome and Travis, you can keep it
-  // If not, you can safely remove it
-  // https://github.com/karma-runner/karma/issues/1144#issuecomment-53633076
-  if(configuration.browsers[0] === 'Chrome' && process.env.TRAVIS) {
-    configuration.customLaunchers = {
-      'chrome-travis-ci': {
-        base: 'Chrome',
-        flags: ['--no-sandbox']
-      }
-    };
-    configuration.browsers = ['chrome-travis-ci'];
-  }
-
+  
   config.set(configuration);
 };
