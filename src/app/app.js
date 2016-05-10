@@ -4,11 +4,32 @@
  * Time: 19:02
  */
 'use strict';
-var app = angular.module('aGame', [
+
+angular.module('aGame', [
     'ngResource', 'ui.router', 'ui.bootstrap', 'ngAside', 'ngTagsInput','ngSanitize', 'ngCsv'
-]);
-app.config(routerConfig).directive(
-    'navbar', navbar).constant('baseURL', 'http://localhost:3000/');
+])
+.config(routerConfig).directive(
+    'navbar', navbar).constant('baseURL', 'http://localhost:3000/')
+.run(['$state', '$rootScope', '$location', 'authService', function($state, $rootScope, $location, authService) {
+        var stateChangeStart = $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+
+                if (fromState.url === '^') {
+                    if (authService.isLoggedIn())
+                        $state.go('main');
+                    else {
+                        authService.userStatus().get().$promise.then(function(response) {
+                            //Add item to the collection of items
+                            authService.setLoggedIn(response.status);
+                            if (!authService.isLoggedIn()) $state.go('auth');
+                            else $state.go('main');
+                        }, function(response) {
+                            vm.message = "Error: " + response.status + " " + response.statusText;
+                        });
+                    }
+            }
+        });
+
+    }]);
 /** @ngInject */
 function routerConfig($stateProvider, $urlRouterProvider, $locationProvider) {
     // the known route, with missing '/' - let's create alias
@@ -36,26 +57,7 @@ function routerConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         controllerAs: 'signup'
     });
 }
-app.run(['$state', '$rootScope', '$location', 'authService', function($state, $rootScope, $location, authService) {
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
 
-            if (fromState.url === '^') {
-                if (authService.isLoggedIn())
-                    $state.go('main');
-                else {
-                    authService.userStatus().get().$promise.then(function(response) {
-                        //Add item to the collection of items
-                        authService.setLoggedIn(response.status);
-                        if (!authService.isLoggedIn()) $state.go('auth');
-                        else $state.go('main');
-                    }, function(response) {
-                        vm.message = "Error: " + response.status + " " + response.statusText;
-                    });
-                }
-        }
-    });
-
-}]);
 /** @ngInject */
 navbar.$inject = [ 'itemService' ];
 

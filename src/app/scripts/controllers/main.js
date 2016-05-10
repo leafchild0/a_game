@@ -6,19 +6,20 @@
 
 (function (){
     'use strict';
-    
+
     angular.module( 'aGame' ).controller( 'MainController', MainController );
-    
+
     MainController.$inject = [ '$scope', '$aside', 'itemService' ];
-    
+
     /** @ngInject */
     function MainController( $scope, $aside, itemService ){
         var vm      = this;
         vm.items    = [];
         vm.newItem  = {};
         vm.fileName = 'items_' + Date.now();
+        vm.questForm = {};
         vm.exportHeaders = ['Name', 'Type', 'Priority', 'Description', 'Created Date'];
-        
+
         vm.exportData = function (){
             return vm.items.map(function(item){
                 return {
@@ -28,9 +29,9 @@
                     description: item.description || '',
                     createdDate: new Date(item.createdDate).toLocaleString( 'en-US' )
                 }
-            });    
+            });
         };
-        
+
         vm.getItems = function (){
             itemService.items().getAll(
                 function ( response ){
@@ -41,7 +42,7 @@
                     vm.message = "Error: " + response.status + " " + response.statusText;
                 } );
         };
-        
+
         vm.addItem = function ( item ){
             //Add other required values
             item.type = item.type || 'quest';
@@ -56,13 +57,13 @@
                 } );
             //Cleanup
             vm.newItem = { name: "" };
-            $scope.questForm.$setPristine();
-            
+            //vm.questForm.$setPristine();
+
         };
-        
+
         vm.deleteItem = function ( item, $index ){
             //Verify whether item is fine
-            
+
             //delete from DB
             itemService.singleItem().delete( { id: item._id }, item ).$promise.then(
                 function (){
@@ -73,16 +74,16 @@
                     vm.message = "Error: " + response.status + " " + response.statusText;
                 } );
         };
-        
+
         vm.editItem = function ( item ){
-            
+
             /*
              * BootstrapUI modal
              * Has method close()
              * see http://angular-ui.github.io/bootstrap/
              * Search for a modal
              * */
-            var details = $aside.open( {
+            vm.details = $aside.open( {
                 templateUrl : 'app/partials/details.html',
                 controller  : 'DetailsController',
                 controllerAs: 'details',
@@ -96,8 +97,8 @@
                     items   : function (){ return vm.items; }
                 }
             } );
-            
-            details.result.finally( function (){
+
+            vm.details.result.then( function (){
                 //Saving an updates on item
                 if ( item.changed ){
                     itemService.singleItem().update( { id: item._id }, item ).$promise.then(
@@ -112,7 +113,7 @@
                     );
                 }
             } );
-            
+
         };
     }
 })();

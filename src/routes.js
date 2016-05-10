@@ -41,7 +41,9 @@ router.post('/items', isAuth, function (request, response) {
 
         return console.log(item.name + ' has been created');
     });
-    return response.send(item);
+    return response.status(201).json({
+        item: item
+    });
 
 });
 

@@ -12,25 +12,25 @@ var pathSrcHtml = [
 
 function listFiles() {
 
-  var patterns = wiredep(_.extend({}, conf.wiredep)).js
+  var wiredepOptions = _.extend({}, conf.wiredep, {
+    dependencies: true,
+    devDependencies: true
+  });
+
+  var patterns = wiredep(wiredepOptions).js
     .concat([
       path.join(conf.paths.src, '/app/app.js'),
-      path.join(conf.paths.src, '/app/scripts/*.js'),
+      path.join(conf.paths.src, '/app/scripts/**/*.js'),
       path.join(conf.paths.tests, '/**/*.js')
     ])
     .concat(pathSrcHtml);
-  
+
   var files = patterns.map(function (pattern) {
     return {
       pattern: pattern
     };
   });
-  files.push({
-    pattern: path.join(conf.paths.src, 'app/images/*.png'),
-    included: false,
-    served: true,
-    watched: false
-  });
+
   return files;
 }
 
@@ -50,17 +50,16 @@ module.exports = function(config) {
 
     logLevel: 'WARN',
 
-    frameworks: ['jasmine', 'angular-filesort', 'wiredep', 'jasmine-matchers'],
+    frameworks: ['jasmine', 'angular-filesort', 'jasmine-matchers'],
 
     angularFilesort: {
       whitelist: [path.join(conf.paths.src, '/**/!(*.html|*.spec|*.mock).js')]
     },
 
-    browsers : ['PhantomJS'],
+    browsers : ['PhantomJS2'],
 
     plugins : [
-      'karma-wiredep',
-      'karma-phantomjs-launcher',
+      'karma-phantomjs2-launcher',
       'karma-angular-filesort',
       'karma-coverage',
       'karma-jasmine',
@@ -75,9 +74,9 @@ module.exports = function(config) {
 
     reporters: ['progress'],
 
-    proxies: {
-      '/assets/': path.join('/base/', conf.paths.src, '/assets/')
-    }
+    // proxies: {
+    //   '/assets/': path.join('/base/', conf.paths.src, '/assets/')
+    // }
   };
 
   // This is the default preprocessors configuration for a usage with Karma cli
@@ -88,6 +87,6 @@ module.exports = function(config) {
   pathSrcHtml.forEach(function(path) {
     configuration.preprocessors[path] = ['ng-html2js'];
   });
-  
+
   config.set(configuration);
 };
