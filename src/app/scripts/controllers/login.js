@@ -4,45 +4,45 @@
  * Time: 10:18
  */
 
-(function (){
+(function () {
     'use strict';
 
-    angular.module( 'aGame' ).controller( 'LoginController', LoginController );
+    angular.module('aGame').controller('LoginController', LoginController);
 
-    LoginController.$inject = [ 'authService', '$location' ];
+    LoginController.$inject = ['authService', '$location'];
 
     /** @ngInject */
-    function LoginController( authService, $location ){
-        var vm     = this;
+    function LoginController(authService, $location) {
+        var vm = this;
         vm.message = null;
         vm.result = null;
 
-        vm.signup = function ( newUser ){
+        vm.signup = function (newUser) {
 
             //Make a call to the backend which will return User info or error message
-            authService.signup().save( newUser ).$promise.then(
-                function ( response ){
+            authService.signup().save(newUser).$promise.then(
+                function (response) {
                     vm.result = response;
                     //Add item to the collection of items
-                    $location.path( '/login' ).replace();
+                    $location.path('/login').replace();
                 },
-                function ( response ){
+                function (response) {
                     vm.message = "Error: " + response.status + " " + response.data.status;
-                } );
+                });
         };
 
-        vm.login = function ( user ){
+        vm.login = function (user) {
             //Make a call to the backend which will return User info or error message
-            authService.login().make( user ).$promise.then(
-                function ( response ){
+            authService.login().make(user).$promise.then(
+                function (response) {
                     vm.result = response;
                     //Add item to the collection of items
-                    authService.setLoggedIn( true );
-                    $location.path( '/main' ).replace();
+                    authService.setLoggedIn(true);
+                    $location.path('/main').replace();
                 },
-                function ( response ){
+                function (response) {
                     vm.message = "Error: " + response.status + " " + response.data.status;
-                } );
+                });
         };
 
     }
